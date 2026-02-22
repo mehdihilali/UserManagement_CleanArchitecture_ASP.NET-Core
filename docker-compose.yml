@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: UserManagementSystem.API/Dockerfile
+    ports:
+      - "5000:8080"
+    depends_on:
+      sqlserver:
+        condition: service_healthy # Attend que le healthcheck SQL soit OK
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080 # Force l'écoute sur HTTP uniquement
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=UserManagementDb;User=sa;Password=Mehdi2002@@;TrustServerCertificate=True;
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      SA_PASSWORD: "Mehdi2002@@"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    healthcheck: # Vérifie si SQL Server est réellement prêt à recevoir des connexions
+      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "Mehdi2002@@", "-Q", "SELECT 1", "-C"]
+      interval: 10s
+      timeout: 3s
+      retries: 10

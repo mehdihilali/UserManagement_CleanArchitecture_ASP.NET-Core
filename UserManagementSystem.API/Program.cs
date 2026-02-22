@@ -41,17 +41,33 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// --- AJOUT : Initialisation de la base de données ---
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        // Crée la base et les tables si elles n'existent pas
+        context.Database.EnsureCreated();
+        Console.WriteLine("Base de données et tables vérifiées/créées avec succès.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Erreur lors de l'initialisation de la DB : {ex.Message}");
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Optionnel : Commenter cette ligne si tu as toujours l'alerte "Failed to determine https port"
+// app.UseHttpsRedirection(); 
 
 app.UseCors("AllowAll");
-
 app.MapControllers();
 
 app.Run();
