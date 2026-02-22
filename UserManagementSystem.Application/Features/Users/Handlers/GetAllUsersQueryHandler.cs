@@ -19,7 +19,7 @@ namespace UserManagementSystem.Application.Features.Users.Handlers
 
         public async Task<List<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await _repository.GetAllAsync();
+            var users = await _repository.GetAllAsync(cancellationToken);
 
             return users.Select(u =>
             new UserDto(u.Id, u.FirstName, u.LastName, u.Email))

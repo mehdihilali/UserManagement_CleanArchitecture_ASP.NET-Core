@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UserManagementSystem.Application.Features.Users.Commands;
+using UserManagementSystem.Application.Features.Users.DTO;
 using UserManagementSystem.Application.Features.Users.Queries;
 
 namespace UserManagementSystem.API.Controllers
@@ -21,7 +22,7 @@ namespace UserManagementSystem.API.Controllers
             => Ok(await _mediator.Send(command));
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<List<UserDto>>> GetAll()
             => Ok(await _mediator.Send(new GetAllUsersQuery()));
 
         [HttpPut("{id}")]

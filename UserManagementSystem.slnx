@@ -3,4 +3,5 @@
   <Project Path="UserManagementSystem.Application/UserManagementSystem.Application.csproj" />
   <Project Path="UserManagementSystem.Domain/UserManagementSystem.Domain.csproj" />
   <Project Path="UserManagementSystem.Infrastructure/UserManagementSystem.Infrastructure.csproj" />
+  <Project Path="UserManagementSystem.Tests/UserManagementSystem.Tests.csproj" Id="4ed14d88-9921-4e28-b1cb-383198139f09" />
 </Solution>

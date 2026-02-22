@@ -23,8 +23,10 @@ namespace UserManagementSystem.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<User>> GetAllAsync()
-            => await _context.Users.ToListAsync();
+        public async Task<List<User>> GetAllAsync(CancellationToken cancellationToken)
+            => await _context.Users
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 
         public async Task<User?> GetByIdAsync(Guid id)
             => await _context.Users.FindAsync(id);
